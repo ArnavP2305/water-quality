@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water Quality Prediction</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80") no-repeat center center fixed;
+            background-size: cover;
+            position: relative;
+        }
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.6); /* overlay */
+        }
+        .content {
+            position: relative;
+            z-index: 1;
+        }
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: scale(1.02);
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">💧 Water Quality Predictor</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container content mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+
+                <div class="card shadow-lg p-4 rounded-4 bg-white">
+                    <h2 class="text-center mb-4 text-primary">Check Your Water Quality</h2>
+                    
+                    <form action="/predict" method="post">
+                        <div class="mb-3">
+                            <label class="form-label">pH</label>
+                            <input type="number" step="any" name="ph" class="form-control" placeholder="Enter pH" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Hardness</label>
+                            <input type="number" step="any" name="hardness" class="form-control" placeholder="Enter Hardness" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Solids</label>
+                            <input type="number" step="any" name="solids" class="form-control" placeholder="Enter Solids" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Chloramines</label>
+                            <input type="number" step="any" name="chloramines" class="form-control" placeholder="Enter Chloramines" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Sulfate</label>
+                            <input type="number" step="any" name="sulfate" class="form-control" placeholder="Enter Sulfate" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Conductivity</label>
+                            <input type="number" step="any" name="conductivity" class="form-control" placeholder="Enter Conductivity" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Organic Carbon</label>
+                            <input type="number" step="any" name="organic_carbon" class="form-control" placeholder="Enter Organic Carbon" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Trihalomethanes</label>
+                            <input type="number" step="any" name="trihalomethanes" class="form-control" placeholder="Enter Trihalomethanes" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Turbidity</label>
+                            <input type="number" step="any" name="turbidity" class="form-control" placeholder="Enter Turbidity" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">🚀 Predict</button>
+                    </form>
+
+                    {% if prediction_text %}
+                        <div class="alert alert-info text-center mt-4 fw-bold" role="alert">
+                            {{ prediction_text }}
+                        </div>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>🌊 Water Quality Prediction App | Built with Flask & ML</p>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
