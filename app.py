@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request
 import pickle
-import pandas as pd
+import numpy as np
 
 app = Flask(__name__)
 
@@ -17,19 +17,23 @@ def predict():
     try:
         # Get features from form
         features = [float(x) for x in request.form.values()]
+        features_array = np.array([features])
+        
+        # Prediction
+        prediction = model.predict(features_array)[0]
 
-        # Create DataFrame with same column names as training
-        input_data = pd.DataFrame([features], columns=[
-            "ph", "Hardness", "Solids", "Chloramines", "Sulfate",
-            "Conductivity", "Organic_carbon", "Trihalomethanes", "Turbidity"
-        ])
-
-        # Predict using the model
-        prediction = model.predict(input_data)
-
-        result = "✅ Safe to Drink" if prediction[0] == 1 else "❌ Not Safe"
-        return render_template('index.html', prediction_text=f"Water Quality: {result}")
-
+        # Get probability if available
+        if hasattr(model, "predict_proba"):
+            proba = model.predict_proba(features_array)[0]
+            safe_prob = round(proba[1] * 100, 2)   # probability of safe (class 1)
+            unsafe_prob = round(proba[0] * 100, 2) # probability of not safe (class 0)
+            result = f"Water Quality: {'✅ Safe' if prediction == 1 else '❌ Not Safe'} " \
+                     f"(Confidence → Safe: {safe_prob}%, Not Safe: {unsafe_prob}%)"
+        else:
+            result = f"Water Quality: {'✅ Safe' if prediction == 1 else '❌ Not Safe'}"
+        
+        return render_template('index.html', prediction_text=result)
+    
     except Exception as e:
         return render_template('index.html', prediction_text=f"Error: {str(e)}")
 
